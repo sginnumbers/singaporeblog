@@ -15,7 +15,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     
 [[menu.main]]
     name = "Blog posts"
-    url = "/home/"
+    url = ""
 
 [params]
     description = "Exploring Singapore through data."
