@@ -15,7 +15,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     
 [[menu.main]]
     name = "Blog posts"
-    url = ""
+    url = "https://singapore-in-numbers.netlify.com/"
 
 [params]
     description = "Exploring Singapore through data."
