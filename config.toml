@@ -8,14 +8,16 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [permalinks]
     post = "/:year/:month/:day/:slug/"
-
-[[menu.main]]
-    name = "About"
-    url = "/about/"
     
 [[menu.main]]
     name = "Blog posts"
-    url = "https://singapore-in-numbers.netlify.com/"
+    url = "/"
+    weight = 1
+    
+[[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 2
 
 [params]
     description = "Exploring Singapore through data."
