@@ -10,8 +10,8 @@ What do the numbers and data tell us about [Singapore](https://en.wikipedia.org/
 
 I am a PhD student with joint supervision from the [behavioural science group](https://www.wbs.ac.uk/research/specialisms/teaching-groups/bs/) and [department of statistics](https://www2.warwick.ac.uk/fac/sci/statistics/) at the [University of Warwick](https://warwick.ac.uk/), UK. Yes, I am also a Singaporean! 
 
-[Click for my **LinkedIn** profile](https://www.linkedin.com/in/kennethtklim/).
+[Visit my **LinkedIn** profile](https://www.linkedin.com/in/kennethtklim/).
 
-[Click for my **University of Warwick** web page](https://www2.warwick.ac.uk/fac/sci/statistics/staff/research_students/lim/).
+[Visit my **University of Warwick** web page](https://www2.warwick.ac.uk/fac/sci/statistics/staff/research_students/lim/).
 
 
