@@ -1,13 +1,15 @@
 baseurl = "/"
-languageCode = "en-us"
+languageCode = "en"
 title = "Singapore in numbers"
-theme = "hugo-lithium-theme"
+theme = "kiera"
 googleAnalytics = "UA-110249030-1"
 disqusShortname = ""
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
-pygmentsCodeFences = true
-meta = "true"
+metaDataFormat = "yaml"
+pygmentsUseClasses = true
+pygmentCodeFences = true
+meta = "true" 
 
 [permalinks]
     post = "/:year/:month/:day/:slug/"
@@ -24,7 +26,7 @@ meta = "true"
 
 [params]
     description = "Exploring Singapore through numbers, data, and statistics"
-
+    useChroma = true
     # options for highlight.js (version, additional languages, and theme)
     highlightjsVersion = "9.11.0"
     highlightjsCDN = "//cdn.bootcss.com"
@@ -33,5 +35,5 @@ meta = "true"
 
     MathJaxCDN = "//cdn.bootcss.com"
     MathJaxVersion = "2.7.1"
-
+    comments = true
     tagline = "Exploring Singapore through numbers, data, and statistics"
