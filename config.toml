@@ -1,10 +1,13 @@
 baseurl = "/"
 languageCode = "en-us"
 title = "Singapore in numbers"
-theme = "hugo-tranquilpeak-theme"
+theme = "kiera"
 googleAnalytics = "UA-110249030-1"
 disqusShortname = ""
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+
+pygmentsCodeFences = true
+meta = "true"
 
 [permalinks]
     post = "/:year/:month/:day/:slug/"
@@ -20,7 +23,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     weight = 2
 
 [params]
-    description = "Exploring Singapore through data."
+    description = "Exploring Singapore through numbers, data, and statistics"
 
     # options for highlight.js (version, additional languages, and theme)
     highlightjsVersion = "9.11.0"
@@ -31,8 +34,4 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     MathJaxCDN = "//cdn.bootcss.com"
     MathJaxVersion = "2.7.1"
 
-    [params.logo]
-    url = "red.png"
-    width = 60
-    height = 50
-    alt = "Logo"
+    tagline = "Exploring Singapore through numbers, data, and statistics"
