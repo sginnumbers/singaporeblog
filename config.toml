@@ -1,7 +1,7 @@
 baseurl = "/"
 languageCode = "en"
 title = "Singapore in numbers"
-theme = "kiera"
+theme = "beautifulhugo"
 googleAnalytics = "UA-110249030-1"
 disqusShortname = ""
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
@@ -36,4 +36,4 @@ meta = "true"
     MathJaxCDN = "//cdn.bootcss.com"
     MathJaxVersion = "2.7.1"
     comments = true
-    tagline = "Exploring Singapore through numbers, data, and statistics"
+    subtitle = "Exploring Singapore through numbers, data, and statistics"
