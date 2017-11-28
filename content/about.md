@@ -2,7 +2,7 @@
 title = "About"
 date = "2014-04-09"
 menu = "main"
-weight = "20"
+weight = "2"
 meta = "false"
 +++
  

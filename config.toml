@@ -25,6 +25,7 @@ pygmentsCodeFences = true
 [[menu.main]]
     name = "Home"
     url = "https://sgnumbers.netlify.com/"  
+    weight = 1
 
 [params]
     tagline = "Understanding Singapore through numbers, data, and statistics"
