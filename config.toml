@@ -22,6 +22,10 @@ pygmentsCodeFences = true
     twitter = ""
     instagram = ""
 
+[[menu.main]]
+    name = "Home"
+    url = "https://sgnumbers.netlify.com/"  
+
 [params]
     tagline = "Understanding Singapore through numbers, data, and statistics"
 
