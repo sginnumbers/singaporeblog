@@ -1,0 +1,204 @@
+---
+title: The changing number of citizens, permanent residents, and non-residents in Singapore
+author: Kenneth Lim
+date: '2017-11-26'
+slug: the-number-of-citizens-permanent-residents-and-non-residents-in-singapore
+categories:
+  - population
+tags:
+  - population
+  - residents
+  - permanent residents
+  - non-residents
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 1
+    number_sections: true
+    fig_width: 6
+---
+Have you ever wondered:
+
+- How many people are there in Singapore?
+
+- How many citizens, permanent residents, and non-residents are there? 
+
+- How have these numbers changed over the years?
+
+These types of questions are regularly discussed in Singapore, whether in the news or our local coffeeshops. We may hear about the numbers in the most recent year, say in 2017, and some other specific year, say in 2000. However, this means we usually miss out on what's happened in all the other years (like before 2000, and from 2001--2016). We may also hear about different numbers from different people, which can be quite frustrating and confusing.
+
+Using data provided by the government^[www.singstat.gov.sg], I try to write objectively about the trends in the number of citizens, permanent residents, and non-residents in Singapore.
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+options(scipen = 999)
+library(readxl); library(tidyverse)
+#Read dataset
+df <- read_excel("~/Documents/backup/R/data_gov_sg/sg_stats_official_2017.xlsx", 
+                         sheet = "T1", na = "na") 
+df <- df[5:10, ]
+colnames(df) <- df[1, ] #make first row the header
+df <- t(df) #transpose df
+rownames(df) <- NULL #remove rownames
+colnames(df) <- df[1, ] #make first row the header
+df <- df[-1,] # remove first row
+df <- gsub(',', '', df) #remove commas in values
+
+df <- as_tibble(df)
+
+df <- df %>%
+  rename(year = "Variables", 
+         total_pop = "Total Population(Number)",
+         resident_pop = "Resident Population(Number)",
+         sgcitizen_pop = "Singapore Citizen Population(Number)",
+         pr_pop = "Permanent Resident Population(Number)",
+         nonresident_pop = "Non-resident Population(Number)") %>%
+  mutate(year = as.integer(year),
+         total_pop = as.integer(total_pop),
+         resident_pop = as.integer(resident_pop),
+         sgcitizen_pop = as.integer(sgcitizen_pop),
+         pr_pop = as.integer(pr_pop),
+         nonresident_pop = as.integer(nonresident_pop),
+         pop_growth_data = ((total_pop-lag(total_pop))/lag(total_pop))*100,
+         pop_grow_num = total_pop - lag(total_pop))
+
+df_90 <- df %>%
+  mutate(sg_growth = sgcitizen_pop - lag(sgcitizen_pop),
+         pr_growth = pr_pop - lag(pr_pop),
+         nr_growth = nonresident_pop - lag(nonresident_pop)) %>%
+  filter(year >= 1990)
+```
+
+## Total population in Singapore
+How many people are there in Singapore? The lollipop chart below shows the total population in Singapore each year from 1960 to 2017. The total population is made up of Singapore citizens, permanent residents (PRs) and non-residents^[According to www.singstat.gov.sg: 'The non-resident population comprises foreigners who were working, studying or living in Singapore but not granted permanent residence, excluding tourists and short-term visitors'.]. 
+
++ The total population increased by an average (median) of `r format(signif(median(df$pop_grow_num, na.rm = TRUE), digits = 2), big.mark = ',')` people every year from `r round(df$total_pop[df$year==1960]/10^6, digits = 2)` million people in 1960, to `r round(df$total_pop[df$year==2017]/10^6, digits = 2)` million people in 2017.
+
++ There were only two years where the population dropped: 
+    + in 1986, where there were `r format(signif(abs(df$pop_grow_num[df$year==1986]), digits = 2), big.mark = ',')` fewer people compared to 1985; and
+    + in 2003, where there were `r format(signif(abs(df$pop_grow_num[df$year==2003]), digits = 2), big.mark = ',')` fewer people compared to 2002. This is likely because data from 2003 onwards excluded residents who were overseas for a continuous period of 12 months or more^[According to www.singstat.gov.sg: 'Data for 1980 and earlier Censuses refer to all persons present in S'pore on Census day.  Data from 1990 onwards are based on de jure concept.  Data from 2000 onwards are based on the register-based approach.  Data from 2003 onwards exclude residents who are overseas for a continuous period of 12 months or longer as at the reference period.'].
+
++ The greatest annual increase in the population happened in 2008, where there were `r format(signif(max(df$pop_grow_num, na.rm = TRUE), digits = 2), big.mark = ',')` more people compared to 2007.
+ 
+```{r poptrend}
+y_skip <- rep("" , times = 4)
+
+year2 <- c("1960", y_skip, "1965", y_skip, "1970", y_skip, "1975", y_skip, "1980", y_skip, 
+           "1985", y_skip, "1990", y_skip, "1995", y_skip, "2000", y_skip, "2005", y_skip, 
+           "2010", y_skip, "2015", "", "2017")
+
+df %>%
+  mutate(total_pop_million = total_pop/10^6) %>%
+ggplot(mapping = aes(x = year, y = total_pop_million)) +
+  #geom_line(size = 0.85) + 
+  geom_point(aes(col = factor(year == 1990 | year == 2000 | year == 2003))) +
+  geom_segment(mapping = aes(x = year, xend = year, y = 0, yend = total_pop_million,
+              col = factor(year == 1990 | year == 2000 | year == 2003))) +
+  guides(colour = FALSE) + 
+  scale_color_manual(values=c("#000000", "#3399FF")) +
+  scale_x_continuous(breaks = seq.int(from = 1960, to = 2017, by = 1), labels = year2) +
+  scale_y_continuous(breaks = seq.int(from = 0, to = 6, by = 0.5), limits = c(0,6)) +
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 8),
+        legend.position = "bottom",
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank(),
+        title = element_text(size = 9)) +
+  labs(x = "Year",
+       y = "Total population (Million)",
+       col = "",
+       title = "Total population in Singapore, 1960--2017",
+       subtitle = "Data from www.singstat.gov.sg",
+       caption = "Blue colour: A new definition of 'total population' was used from that year onwards")
+```
+
+## Total population by residency status
+What about a breakdown of the population by Singapore citizens, permanent residents (PRs) and non-residents? The line chart below shows the trend in the number of Singapore citizens, PRs, and non-residents. The line for non-residents starts at 1980 while the lines for citizens and PRs start at 1990 because that is when consecutive years of data are available. Data before 1970 are not available.
+
++ The number of Singapore citizens increased by an average (median) of `r format(signif(median(df_90$sg_growth, na.rm = TRUE), digits = 3), big.mark = ",")` each year, from `r paste(signif((df$sgcitizen_pop[df$year == 1990])/10^6, digits = 3), "million", sep = " ")` citizens in 1990 to `r paste(signif((df$sgcitizen_pop[df$year == 2017])/10^6, digits = 3), "million", sep = " ")` citizens in 2017. 
+
++ The number of permanent residents increased by an average (median) of `r format(signif(median(df_90$pr_growth, na.rm = TRUE), digits = 3), big.mark = ",")` each year, from `r format(signif((df$pr_pop[df$year == 1990]), digits = 3), big.mark = ",")` permanent residents in 1990 to `r format(signif((df$pr_pop[df$year == 2017]), digits = 3), big.mark = ",")` permanent residents in 2017. 
+
++ The number of non-residents increased by an average (median) of `r format(signif(median(df_90$nr_growth, na.rm = TRUE), digits = 3), big.mark = ",")` each year, from `r format(signif((df$nonresident_pop[df$year == 1990]), digits = 3), big.mark = ",")` non-residents in 1990 to `r paste(signif(((df$nonresident_pop[df$year == 2017])/10^6), digits = 3), "million", sep = " ")`  non-residents in 2017. 
+
+```{r resident1, warning = FALSE}
+year2a <- c("1970", y_skip, "1975", y_skip, "1980", 
+           y_skip, "1985", y_skip, "1990", 
+           y_skip, "1995", y_skip, "2000", 
+           y_skip, "2005", y_skip, "2010",
+           y_skip, "2015", "", "2017")
+
+df %>%
+  mutate(sg = sgcitizen_pop/10^6,
+         pr = pr_pop/10^6,
+         nr = nonresident_pop/10^6) %>%
+  select(year, sg, pr, nr) %>%
+  filter(year >= 1970) %>%
+  gather(key = residency, value = million, sg:nr, factor_key = TRUE) %>%
+  ggplot(mapping = aes(x = year, y = million, col = factor(residency, labels = c("Singapore citizen", "Permanent resident", "Non-resident")))) + 
+  geom_line(size = 1) +
+  geom_point(size = 2, colour = "white") +
+  geom_point(size = 1) +
+  scale_x_continuous(breaks = seq.int(from = 1970, to = 2017, by = 1), labels = year2a) +
+  scale_y_continuous(breaks = seq.int(from = 0, to = 3.5, by = 0.25)) +
+  geom_vline(xintercept = c(1990, 2000, 2003), linetype = 2, alpha = 0.3) + 
+  theme_bw() + 
+  theme(panel.grid.minor = element_blank(),
+        axis.text.x = element_text(angle = 60, size = 8, hjust = 1),
+        legend.position = "bottom",
+        title = element_text(size = 9)) +
+  labs(x = "Year",
+       y = "Number of people (Million)",
+       col = "Residence type",
+       title = "Number of citizens, PRs, and non-residents in the population, 1970--2017",
+       subtitle = "Data from www.singstat.gov.sg", 
+       caption = "1990, 2000, and 2003: A new definition of 'total population' was used from that year onwards")
+
+```
+
+
+```{r setuplong}
+df_2 <- df %>%
+  mutate(sg = (sgcitizen_pop/total_pop)*100,
+         pr = (pr_pop/total_pop)*100,
+         nr = (nonresident_pop/total_pop)*100,
+         cx = sg + pr + nr,
+         sg_grow = sg - lag(sg),
+         pr_grow = pr - lag(pr),
+         nr_grow = nr - lag(nr))
+```
+
+The chart below shows the trend in the percentage of Singapore citizens, PRs and non-residents. The line for non-residents starts at 1980 while the lines for citizens and PRs start at 1990 because that is when the data are available. Data before 1970 are not available.
+
++ The percentage of Singapore citizens in the Singapore population decreased by an average (median) of `r paste(round(median(abs(df_2$sg_grow), na.rm = TRUE), digits = 1), "percentage points", sep = " ")` each year, from `r paste(round(df_2$sg[df_2$year==1990], digits = 1), "%", sep = "")` in 1990 to `r paste(round(df_2$sg[df_2$year==2017], digits = 1), "%", sep = "")` in 2017.
+
++ The percentage of permanent residents in the Singapore population increased by an average (median) of `r paste(round(median(abs(df_2$pr_grow), na.rm = TRUE), digits = 1), "percentage points", sep = " ")` each year, from `r paste(round(df_2$pr[df_2$year==1990], digits = 1), "%", sep = "")` in 1990 to `r paste(round(df_2$pr[df_2$year==2017], digits = 1), "%", sep = "")` in 2017.
+
++ The percentage of non-residents in the Singapore population increased by an average (median) of `r paste(round(median(abs(df_2$nr_grow), na.rm = TRUE), digits = 1), "percentage points", sep = " ")` each year, from `r paste(round(df_2$nr[df_2$year==1990], digits = 1), "%", sep = "")` in 1990 to `r paste(round(df_2$nr[df_2$year==2017], digits = 1), "%", sep = "")` in 2017.
+
+```{r residp, warning = FALSE}
+df_2 %>%
+  select(year, sg, pr, nr) %>%
+  gather(key = residency, value = percent, sg:nr, factor_key = TRUE) %>%
+  filter(year >= 1970) %>%
+  ggplot(mapping = aes(x = year, y = percent, colour = factor(residency, labels = c("Singapore citizen", "Permanent resident", "Non-resident")))) +
+  geom_line(size = 1) +
+  geom_point(size = 2, colour = "white") +
+  geom_point(size = 1) +
+  scale_y_continuous(breaks = seq.int(from = 0, to = 90, by = 5)) +
+  scale_x_continuous(breaks = seq.int(from = 1970, to = 2017, by = 1), labels = year2a) +
+  geom_vline(xintercept = c(1990, 2000, 2003), linetype = 2, alpha = 0.3) + 
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 8),
+        legend.position = "bottom",
+        panel.grid.minor = element_blank(),
+        title = element_text(size = 9)) +
+  labs(x = "Year", 
+       y = "Percentage of total population (%)",
+       colour = "Residence type",
+       title = "Percentage of citizens, PRs, and non-residents in the population, 1970--2017",
+       subtitle = "Data from www.singstat.gov.sg", 
+       caption = "1990, 2000, and 2003: A new definition of 'total population' was used from that year onwards")
+```
+
+It is interesting to note that the percentage of non-residents in the total population was just under 20\% from 1998 to 2006, but increased rapidly to `r paste(round(df_2$nr[df_2$year==2009], digits = 1), "%", sep = "")` in 2009. From 2006 to 2009, the total population increased by `r format(signif(df$total_pop[df$year==2009] - df$total_pop[df$year==2006], digits = 3), big.mark = ",")` people, of which `r paste(round(((df$nonresident_pop[df_2$year==2009] - df$nonresident_pop[df_2$year==2006]) / (df$total_pop[df$year==2009] - df$total_pop[df$year==2006]))*100, digits = 1), "%", sep = "")` were non-residents, `r paste(round(((df$pr_pop[df_2$year==2009] - df$pr_pop[df_2$year==2006]) / (df$total_pop[df$year==2009] - df$total_pop[df$year==2006]))*100, digits = 1), "%", sep = "")`  were permanent residents, and `r paste(round(((df$sgcitizen_pop[df_2$year==2009] - df$sgcitizen_pop[df_2$year==2006]) / (df$total_pop[df$year==2009] - df$total_pop[df$year==2006]))*100, digits = 1), "%", sep = "")` were Singapore citizens. As a result, the percentage of Singapore citizens in the total population decreased  from `r paste(round(df_2$sg[df_2$year==2006], digits = 1), "%", sep = "")` in 2006 to `r paste(round(df_2$sg[df_2$year==2009], digits = 1), "%", sep = "")` in 2009. 
