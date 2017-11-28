@@ -24,7 +24,7 @@ pygmentsCodeFences = true
 
 [[menu.main]]
     name = "Home"
-    url = "https://sgnumbers.netlify.com/"  
+    url = "/"  
     weight = 1
 
 [params]
