@@ -11,11 +11,7 @@ tags:
   - permanent residents
   - non-residents
 output:
-  blogdown::html_page:
-    toc: true
-    toc_depth: 1
-    number_sections: true
-    fig_width: 6
+  blogdown::html_page
 ---
 Have you ever wondered:
 
