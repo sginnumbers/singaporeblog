@@ -1,4 +1,4 @@
-baseurl = "http://numbers.sg/"
+baseurl = "/"
 title = "Singapore in numbers"
 copyright = ""
 canonifyurls = true
