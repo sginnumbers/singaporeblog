@@ -13,7 +13,7 @@ output:
   blogdown::html_page:
     toc: true
     toc_depth: 1
-    number_sections: false
+    number_sections: no
     fig_width: 6
 ---
 Have you ever wondered:
@@ -24,7 +24,7 @@ Have you ever wondered:
 
 - How have these numbers changed over the years?
 
-These types of questions are regularly discussed in Singapore, whether in the news or our local coffeeshops. We may hear about the numbers in the most recent year, say in 2017, and some other specific year, say in 2000. However, this means we usually miss out on what's happened in all the other years (like before 2000, and from 2001--2016). We may also hear about different numbers from different people, which can be quite frustrating and confusing.
+These types of questions are regularly discussed in Singapore, whether in the news or our local coffeeshops. We may hear about the numbers in the most recent year, like 2017, and some other specific year, like 2000. However, this means we usually miss out on what's happened in all the other years (like before 2000, and from 2001--2016). We may also hear about different numbers from different people and get confused.
 
 Using data provided by the government^[www.singstat.gov.sg], I try to write objectively about the trends in the number of citizens, permanent residents, and non-residents in Singapore.
 
@@ -68,7 +68,7 @@ df_90 <- df %>%
   filter(year >= 1990)
 ```
 
-## Total population in Singapore
+# Total population in Singapore
 How many people are there in Singapore? The lollipop chart below shows the total population in Singapore each year from 1960 to 2017. The total population is made up of Singapore citizens, permanent residents (PRs) and non-residents^[According to www.singstat.gov.sg: 'The non-resident population comprises foreigners who were working, studying or living in Singapore but not granted permanent residence, excluding tourists and short-term visitors'.]. 
 
 + The total population increased by an average (median) of `r format(signif(median(df$pop_grow_num, na.rm = TRUE), digits = 2), big.mark = ',')` people every year from `r round(df$total_pop[df$year==1960]/10^6, digits = 2)` million people in 1960, to `r round(df$total_pop[df$year==2017]/10^6, digits = 2)` million people in 2017.
@@ -111,7 +111,7 @@ ggplot(mapping = aes(x = year, y = total_pop_million)) +
        caption = "Blue colour: A new definition of 'total population' was used from that year onwards")
 ```
 
-## Total population by residency status
+# Total population by residency status
 What about a breakdown of the population by Singapore citizens, permanent residents (PRs) and non-residents? The line chart below shows the trend in the number of Singapore citizens, PRs, and non-residents. The line for non-residents starts at 1980 while the lines for citizens and PRs start at 1990 because that is when consecutive years of data are available. Data before 1970 are not available.
 
 + The number of Singapore citizens increased by an average (median) of `r format(signif(median(df_90$sg_growth, na.rm = TRUE), digits = 3), big.mark = ",")` each year, from `r paste(signif((df$sgcitizen_pop[df$year == 1990])/10^6, digits = 3), "million", sep = " ")` citizens in 1990 to `r paste(signif((df$sgcitizen_pop[df$year == 2017])/10^6, digits = 3), "million", sep = " ")` citizens in 2017. 
