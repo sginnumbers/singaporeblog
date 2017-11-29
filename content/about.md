@@ -10,7 +10,7 @@ meta = "false"
 What do the numbers and data tell us about [Singapore](https://en.wikipedia.org/wiki/Singapore)? Let's find out together! Join me as I use publicly available data to create (hopefully) nice-looking charts and try to understand what is going on in Singapore.
 
 ## Me
-I am a PhD student with joint supervision from the [behavioural science group](https://www.wbs.ac.uk/research/specialisms/teaching-groups/bs/) and [department of statistics](https://www2.warwick.ac.uk/fac/sci/statistics/) at the [University of Warwick](https://warwick.ac.uk/), UK. Yes, I am also a Singaporean!
+![EG](/static/img/showcase.png#float) I am a PhD student with joint supervision from the [behavioural science group](https://www.wbs.ac.uk/research/specialisms/teaching-groups/bs/) and [department of statistics](https://www2.warwick.ac.uk/fac/sci/statistics/) at the [University of Warwick](https://warwick.ac.uk/), UK. Yes, I am also a Singaporean!
 
 [Visit my LinkedIn profile.](https://www.linkedin.com/feed/)
 
