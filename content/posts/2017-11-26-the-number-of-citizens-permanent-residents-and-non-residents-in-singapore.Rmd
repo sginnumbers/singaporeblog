@@ -112,6 +112,7 @@ ggplot(mapping = aes(x = year, y = total_pop_million)) +
 ```
 
 # Total population by residency status
+
 What about a breakdown of the population by Singapore citizens, permanent residents (PRs) and non-residents? The line chart below shows the trend in the number of Singapore citizens, PRs, and non-residents. The line for non-residents starts at 1980 while the lines for citizens and PRs start at 1990 because that is when consecutive years of data are available. Data before 1970 are not available.
 
 + The number of Singapore citizens increased by an average (median) of `r format(signif(median(df_90$sg_growth, na.rm = TRUE), digits = 3), big.mark = ",")` each year, from `r paste(signif((df$sgcitizen_pop[df$year == 1990])/10^6, digits = 3), "million", sep = " ")` citizens in 1990 to `r paste(signif((df$sgcitizen_pop[df$year == 2017])/10^6, digits = 3), "million", sep = " ")` citizens in 2017. 
