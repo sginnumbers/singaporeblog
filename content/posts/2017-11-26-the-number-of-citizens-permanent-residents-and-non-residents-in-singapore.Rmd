@@ -43,7 +43,7 @@ colnames(df) <- df[1, ] #make first row the header
 df <- df[-1,] # remove first row
 df <- gsub(',', '', df) #remove commas in values
 
-df <- as_tibble(df)
+df <- as_tibble(df) #make data frame a tibble
 
 df <- df %>%
   rename(year = "Variables", 
@@ -167,7 +167,7 @@ df_2 <- df %>%
 
 The chart below shows the trend in the percentage of Singapore citizens, PRs and non-residents. The line for non-residents starts at 1980 while the lines for citizens and PRs start at 1990 because that is when the data are available. Data before 1970 are not available.
 
-+ The percentage of Singapore citizens in the Singapore population decreased by an average (median) of `r paste(round(median(abs(df_2$sg_grow), na.rm = TRUE), digits = 1), "percentage points", sep = " ")` each year, from `r paste(round(df_2$sg[df_2$year==1990], digits = 1), "%", sep = "")` in 1990 to `r paste(round(df_2$sg[df_2$year==2017], digits = 1), "%", sep = "")` in 2017.
++ The percentage of Singapore citizens in the Singapore population decreased by an average (median) of `r paste(round(median(abs(df_2$sg_grow), na.rm = TRUE), digits = 1), "percentage point", sep = " ")` each year, from `r paste(round(df_2$sg[df_2$year==1990], digits = 1), "%", sep = "")` in 1990 to `r paste(round(df_2$sg[df_2$year==2017], digits = 1), "%", sep = "")` in 2017.
 
 + The percentage of permanent residents in the Singapore population increased by an average (median) of `r paste(round(median(abs(df_2$pr_grow), na.rm = TRUE), digits = 1), "percentage points", sep = " ")` each year, from `r paste(round(df_2$pr[df_2$year==1990], digits = 1), "%", sep = "")` in 1990 to `r paste(round(df_2$pr[df_2$year==2017], digits = 1), "%", sep = "")` in 2017.
 
@@ -198,4 +198,12 @@ df_2 %>%
        caption = "1990, 2000, and 2003: A new definition of 'total population' was used from that year onwards")
 ```
 
-It is interesting to note that the percentage of non-residents in the total population was just under 20\% from 1998 to 2006, but increased rapidly to `r paste(round(df_2$nr[df_2$year==2009], digits = 1), "%", sep = "")` in 2009. From 2006 to 2009, the total population increased by `r format(signif(df$total_pop[df$year==2009] - df$total_pop[df$year==2006], digits = 3), big.mark = ",")` people, of which `r paste(round(((df$nonresident_pop[df_2$year==2009] - df$nonresident_pop[df_2$year==2006]) / (df$total_pop[df$year==2009] - df$total_pop[df$year==2006]))*100, digits = 1), "%", sep = "")` were non-residents, `r paste(round(((df$pr_pop[df_2$year==2009] - df$pr_pop[df_2$year==2006]) / (df$total_pop[df$year==2009] - df$total_pop[df$year==2006]))*100, digits = 1), "%", sep = "")`  were permanent residents, and `r paste(round(((df$sgcitizen_pop[df_2$year==2009] - df$sgcitizen_pop[df_2$year==2006]) / (df$total_pop[df$year==2009] - df$total_pop[df$year==2006]))*100, digits = 1), "%", sep = "")` were Singapore citizens. As a result, the percentage of Singapore citizens in the total population decreased  from `r paste(round(df_2$sg[df_2$year==2006], digits = 1), "%", sep = "")` in 2006 to `r paste(round(df_2$sg[df_2$year==2009], digits = 1), "%", sep = "")` in 2009. 
+It is interesting to note that the percentage of non-residents in the total population was just under 20\% from 1998 to 2006, but increased rapidly to `r paste(round(df_2$nr[df_2$year==2009], digits = 1), "%", sep = "")` in 2009. From 2006 to 2009, the total population increased by `r format(signif(df_2$total_pop[df_2$year==2009] - df_2$total_pop[df_2$year==2006], digits = 3), big.mark = ",")` people, of which
+
++ `r paste(round(((df_2$nonresident_pop[df_2$year==2009] - df_2$nonresident_pop[df_2$year==2006]) / (df_2$total_pop[df_2$year==2009] - df_2$total_pop[df_2$year==2006]))*100, digits = 1), "%", sep = "")` were non-residents, 
+
++ `r paste(round(((df_2$pr_pop[df_2$year==2009] - df_2$pr_pop[df_2$year==2006]) / (df_2$total_pop[df_2$year==2009] - df_2$total_pop[df_2$year==2006]))*100, digits = 1), "%", sep = "")`  were permanent residents, and 
+
++ `r paste(round(((df_2$sgcitizen_pop[df_2$year==2009] - df_2$sgcitizen_pop[df_2$year==2006]) / (df_2$total_pop[df_2$year==2009] - df_2$total_pop[df_2$year==2006]))*100, digits = 1), "%", sep = "")` were Singapore citizens.
+
+As a result, the percentage of Singapore citizens in the total population decreased from `r paste(round(df_2$sg[df_2$year==2006], digits = 1), "%", sep = "")` in 2006 to `r paste(round(df_2$sg[df_2$year==2009], digits = 1), "%", sep = "")` in 2009. 
