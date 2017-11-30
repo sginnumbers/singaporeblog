@@ -74,6 +74,7 @@ How many people are there in Singapore? The lollipop chart below shows the total
 
 + There were only two years where the population dropped: 
     + in 1986, where there were `r format(signif(abs(df$pop_grow_num[df$year==1986]), digits = 2), big.mark = ',')` fewer people compared to 1985; and
+    
     + in 2003, where there were `r format(signif(abs(df$pop_grow_num[df$year==2003]), digits = 2), big.mark = ',')` fewer people compared to 2002. This is likely because data from 2003 onwards excluded residents who were overseas for a continuous period of 12 months or more^[According to www.singstat.gov.sg: 'Data for 1980 and earlier Censuses refer to all persons present in S'pore on Census day.  Data from 1990 onwards are based on de jure concept.  Data from 2000 onwards are based on the register-based approach.  Data from 2003 onwards exclude residents who are overseas for a continuous period of 12 months or longer as at the reference period.'].
 
 + The greatest annual increase in the population happened in 2008, where there were `r format(signif(max(df$pop_grow_num, na.rm = TRUE), digits = 2), big.mark = ',')` more people compared to 2007.
