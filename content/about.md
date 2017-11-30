@@ -16,5 +16,4 @@ What do the numbers and data tell us about [Singapore](https://en.wikipedia.org/
 
 [Visit my University of Warwick web page.](https://www2.warwick.ac.uk/fac/sci/statistics/staff/research_students/lim/)
 
-
 I would like to thank the following people for their generous help, encouragement, and feedback: [Tim Davis](http://www.timdavis.co.uk/), [Jane Hutton](https://warwick.ac.uk/fac/sci/statistics/staff/academic-research/hutton/), [Ella Kaye](https://ellakaye.rbind.io/), [Matt Moores](https://mattstats.wordpress.com/about/), [Lewis Rendell](https://warwick.ac.uk/fac/sci/statistics/staff/research_students/rendell/), and [David Selby](http://selbydavid.com/about/). 
