@@ -26,7 +26,7 @@ Have you ever wondered:
 
 These types of questions are regularly discussed in Singapore, whether in the news or our local coffeeshops. We may hear about the numbers in the most recent year, like 2017, and some other specific year, like 2000. However, this means we usually miss out on what's happened in all the other years (like before 2000, and from 2001--2016). We may also hear about different numbers from different people and get confused.
 
-Using data provided by the government^[www.singstat.gov.sg], I try to write objectively about the trends in the number of citizens, permanent residents, and non-residents in Singapore.
+Using data provided by the government^[www.singstat.gov.sg], I present the trends in the number of citizens, permanent residents, and non-residents in Singapore.
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
