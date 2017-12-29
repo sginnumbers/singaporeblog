@@ -8,7 +8,6 @@ categories:
 tags: 
   - cars
   - coe
-draft: yes
 output:
   blogdown::html_page:
     toc: false
