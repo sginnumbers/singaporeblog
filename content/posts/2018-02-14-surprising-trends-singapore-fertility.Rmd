@@ -1,0 +1,236 @@
+---
+title: 3 surprising trends in Singapore's fertility rate
+author: Kenneth Lim
+date: '2018-02-14'
+slug: surprising-trends-singapore-fertility
+categories:
+  - population
+tags:
+  - fertility
+  - zodiac
+  - females
+output:
+  blogdown::html_page:
+    toc: false
+    number_sections: no
+    fig_width: 7  
+---
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+options(scipen = 999)
+library(readxl); library(tidyverse); library(forcats); library(colorspace); library(pander)
+#Read dataset
+df <- read_excel("~/Documents/backup/R/data_gov_sg/sg_stats_official_2017.xlsx", 
+                         sheet = "T22", col_names = FALSE, na = "na") 
+
+#Data cleaning procedures
+df <- df[6:17, ] #extract rows 5 to 16 & all columns
+df <- t(df) #transpose df
+colnames(df) <- df[1, ] #make first row the column names
+df <- df[-1, ] #remove first row, which is duplicate of the column names now
+rownames(df) <- NULL #remove row names
+df <- data.frame(df) #make into data frame
+
+#convert all factors to numeric values
+df <- data.frame(lapply(df, function(x) as.numeric(as.character(x)))) 
+
+#rename variables
+df <- df %>%
+  rename(year = Variables,
+         tfr = Total.Fertility.Rate.Per.Female.,
+         tfr_1519yo = X15...19.Years.Per.Thousand.Females.,
+         tfr_2024yo = X20...24.Years.Per.Thousand.Females.,
+         tfr_2529yo = X25...29.Years.Per.Thousand.Females.,
+         tfr_3034yo = X30...34.Years.Per.Thousand.Females.,
+         tfr_3539yo = X35...39.Years.Per.Thousand.Females.,
+         tfr_4044yo = X40...44.Years.Per.Thousand.Females.,
+         tfr_4549yo = X45...49.Years.Per.Thousand.Females.,
+         tfr_chinese = Chinese.Per.Female.,
+         tfr_malay = Malays.Per.Female.,
+         tfr_indian = Indians.Per.Female.)
+
+#create a new variable with the zodiac signs repeating until vector length reaches 57
+df$zodiac <- as.factor(rep(c("Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", 
+                "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"), 
+              length.out = 57))
+
+#create objects for use later when labelling plot axes
+y_skip <- rep("" , times = 4)
+year_label <- c("1960", y_skip, "1965", y_skip, "1970", y_skip, "1975", 
+                y_skip, "1980", y_skip, "1985", y_skip, "1990", y_skip, 
+                "1995", y_skip, "2000", y_skip, "2005", y_skip, "2010", 
+                y_skip, "2015", "2016")
+```
+
+For a country to survive and prosper, its population needs to produce enough children to replace itself. To achieve this, each woman has to give birth to at least 2 (living) children during her childbearing years. 
+
+The average number of children per woman is also known as the **total fertility rate (TFR)**. The TFR needed for a population to replace itself is 2.1.^[ Assuming no net migration and unchanged mortality.] This means that, on average, each woman must give birth to 2.1 children.^[There is no such thing as 0.1 child. The number, 2.1, represents the _average_ number of children each woman in the entire population needs to give birth to. It may be more intuitive to think of it as at least 2 children.] This number, 2.1, is known as the **replacement-level fertility**. Anything below 2.1 is known as 'below-replacement fertility', and anything below 1.3 is known as 'very low fertility'.
+
+We can use publicly available data^[Annual GDP growth (%) data from: https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG?locations=SG] from the Singapore government to find out:
+
+1. What is Singapore's total fertility rate? 
+
+2. Does Chinese new year influence fertility rates? (Hint: maybe) 
+
+3. How different is Singapore's fertility rate across the different age and ethnic groups?
+
+The chart below shows the total fertility rate (per female) for each year from 1960 to 2016.
+
+```{r zodiac}
+
+#create new variable to highlight Dragon and Tiger years
+df$zodiacCompress <- as.factor(rep(c("Other", "Other", "Tiger", "Other", "Dragon", "Other", 
+                "Other", "Other", "Other", "Other", "Other", "Other"), 
+              length.out = 57))
+
+#re-order factor levels to: Tiger, Dragon, Other
+df$zodiacCompress <- factor(df$zodiacCompress,levels(df$zodiacCompress)[c(3, 1, 2)])
+
+df %>%
+  ggplot(mapping = aes(x = year, y = tfr)) + 
+  geom_vline(xintercept = 1980, linetype = 1, alpha = 0.25) +
+  geom_vline(xintercept = c(1964, 1985, 1998, 2001, 2009), linetype = 2, alpha = 0.4) +
+  geom_hline(yintercept = 2.1, linetype = 3, alpha = 0.7) + 
+  annotate("rect", xmin = 1969, xmax = 1972, ymin = -Inf, ymax = Inf, alpha = .2) +
+  geom_line() + 
+  geom_point(col = "white", size = 2) +
+  geom_point(size = 1.25, mapping = aes(col = df$zodiacCompress)) +
+  scale_colour_manual(values = c("cornflowerblue", "red", "black")) +
+  scale_x_continuous(breaks = seq.int(from = 1960, to = 2016, by = 1), labels = year_label) +
+  scale_y_continuous(breaks = seq.int(from = 1, to = 6, by = 0.5), limits = c(1,6)) +
+  theme_bw() +
+  theme(panel.grid.minor = element_blank(),
+        legend.position = "bottom",
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 8),
+        legend.margin=margin(t = -0.25, r = 0, b = 0, l = 0, unit="cm"),
+        title = element_text(size = 10.5)) + 
+  labs(x = "Year",
+       y = "Total fertility rate (per female)",
+       col = "Chinese zodiac",
+       title = "Total fertility rate (per female) in Singapore, 1960--2016",
+       subtitle = "Total fertility rate data from www.singstat.gov.sg. GDP growth data from www.worldbank.org/",
+       caption = "Horizontal dotted line. Fertility rate needed to replace population: 2.1 children per woman.\n Dashed lines. Negative GDP growth in 1964, 1985, 1998, 2001, 2009.\n Shaded area. Population planning campaign, 'Stop-at-Two (children)', 1969--1972.\n Solid line. Data before 1980 refer to: 'Total population'. Data from 1980 refer to: 'Residents'.")
+
+```
+ 
+ + Overall, there is a consistent downward trend in TFR over the years, from `r df$tfr[df$year==min(df$year)]` children per female in `r df$year[df$year==min(df$year)]`, to `r df$tfr[df$year==max(df$year)]` children per female in `r df$year[df$year==max(df$year)]`, which is considered to be 'very low fertility'.
+ 
+ + The TFR dropped below the rate needed to replace the population, which is 2.1 children per female, for the first time in `r min(df$year[df$tfr<2.1])`. It increased to `r df$tfr[df$year==1976]` the next year in 1976. From 1977, the TFR remained below 2.1. 
+ 
++ Interestingly, the TFR remained quite constant from 1969 to 1972. These were the years of the [government's population planning campaign to discourage families from having more than two children (click to read more)](https://en.wikipedia.org/wiki/Population_planning_in_Singapore). Three years later, the TFR dropped to around 2 and continued to decrease after. 
+
+Chinese new year usually begins in late January or February. This year, the first day of Chinese new year is on 16 February. Each year represented by one of 12 animals and this year is the year of the Dog. We can see some rough trends over the years^[The numbers are an approximation and won't be entirely accurate because of the difference in the Chinese and conventional, Gregorian, calendars.]. 
+     
++ There is usually a bump in the TFR during the year of the Dragon, but a drop during the year of the Tiger. 
+    + It is considered [lucky to be born in the year of the Dragon (click to read more)](https://www.wsj.com/articles/SB10001424052970203806504577177011519558088), but [unlucky to be born in the year of the Tiger, especially for women (click to read more)](http://www.chinadaily.com.cn/china/2010-02/12/content_9465802.htm). 
+
++ On average, from 1960 to 2016, the TFR is highest in the years of the Dragon but lowest in the years of the Tiger among the zodiac signs:
+    
+```{r zodiac_table}
+zod_tab <- df %>%
+  group_by(zodiac) %>%
+  summarise(med_tfr = round(median(tfr), digits = 2)) %>%
+  arrange(desc(med_tfr)) %>%
+  rename(`Chinese zodiac` = "zodiac",
+         `Average TFR, 1960--2016 (median)` = "med_tfr")
+
+pander(zod_tab)
+```
+
+What about the total fertility rate by the three major ethnic groups in Singapore? 
+```{r ethnic}
+df %>%
+  gather(key = ethnic, value = tfr_value, tfr_chinese:tfr_indian, factor_key = TRUE) %>%
+  ggplot(mapping = aes(x = year, y = tfr_value, col = factor(ethnic, labels = c("Chinese", "Malay", "Indian")))) +
+  geom_vline(xintercept = 1980, linetype = 1, alpha = 0.25) +
+  geom_vline(xintercept = c(1964, 1985, 1998, 2001, 2009), linetype = 2, alpha = 0.4) +
+  geom_hline(yintercept = 2.1, linetype = 1, alpha = 0.25) + 
+  annotate("rect", xmin = 1969, xmax = 1972, ymin = -Inf, ymax = Inf, alpha = .2) +
+  geom_line() + 
+  geom_point(col = "white", size = 1.5) +
+  geom_point(size = 0.75) +
+  scale_x_continuous(breaks = seq.int(from = 1960, to = 2016, by = 1), 
+                     labels = year_label) +
+  scale_y_continuous(breaks = seq.int(from = 1, to = 7.5, by = 0.5), 
+                     limits = c(1,7.5)) + 
+  theme_bw() +
+  theme(panel.grid.minor = element_blank(),
+        legend.position = "bottom",
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 8),
+        legend.margin=margin(t = -0.25, r = 0, b = 0, l = 0, unit="cm"),
+        title = element_text(size = 10.5)) + 
+  guides(colour = guide_legend(reverse = TRUE)) +
+  labs(x = "Year",
+       y = "Total fertility rate (per female)",
+       col = "Ethnic group",
+       title = "Total fertility rate (per female) by ethnic group in Singapore, 1960--2016",
+       subtitle = "Total fertility rate data from www.singstat.gov.sg. GDP growth data from www.worldbank.org/",
+       caption = "Horizontal dotted line. Fertility rate needed to replace population: 2.1 children per woman.\n Dashed lines. Negative GDP growth in 1964, 1985, 1998, 2001, 2009.\n Shaded area. Population planning campaign, 'Stop-at-Two (children)', 1969--1972.\n Solid line. Data before 1980 refer to: 'Total population'. Data from 1980 refer to: 'Residents'.")
+```
+
++ There is an overall downward trend in the TFR across the three major ethnic groups over the years. In 2016, the TFR for all three groups was below 2.1. 
+    + In `r min(df$year)`, Indian females had the _highest_ TFR (`r df$tfr_indian[df$year==min(df$year)]`), followed by Malay females (`r df$tfr_malay[df$year==min(df$year)]`), and then Chinese females (`r df$tfr_chinese[df$year==min(df$year)]`).
+    
+    + In `r min(df$year)`, Indian females had  the _lowest_ TFR (`r df$tfr_indian[df$year==max(df$year)]`). Malay females had the highest TFR (`r df$tfr_malay[df$year==max(df$year)]`), and Chinese females were second with a TFR of (`r df$tfr_chinese[df$year==max(df$year)]`), which is just slightly higher than the TFR of Indian females.
+  
++ Interestingly, the TFR for all three ethnic groups was very similar from 1970, which coincided with the government's population planning campaign, to 1979. 
+
+```{r indian, include = FALSE}
+df <- df %>%
+  mutate(ind_yoy = tfr_indian - lag(tfr_indian),
+         chi_yoy = tfr_chinese - lag(tfr_chinese))
+```
+    + There was a drastic drop in the TFR for Indian females from 1969 to 1970. This was the biggest year-over-year drop (of `r min(df$ind_yoy, na.rm = TRUE)`
+) in the TFR for Indian females from 1960 to 2016.
+    
++ From 1980, a different trend for each ethnic group's TFR emerges. For example, the TFR for Malay females started to increase, and remained above the population replacement rate of 2.1 until `r min(df$year[df$tfr_malay <= 2.1 & df$year >= 1980])`.
+
++ Look again at the trend for Chinese females. Notice the bumps during the Dragon years of `r (df$year[df$zodiac == "Dragon"])[-1]`? The bumps don't really appear for the other ethnic groups!
+
+One reason for the declining TFR is: [women are conceiving when they are older (click to read more)](https://www.sgh.com.sg/about-us/newsroom/News-Articles-Reports/Pages/BabyComeLately.aspx). What trends can the data reveal? 
+
+The chart below shows the total fertility rate per 1,000 females (note the change as compared to 'TFR per female' in the previous charts) by the different age groups from 1960 to 2016.
+```{r age, message = FALSE, warning = FALSE}
+age_label <- c("15--19", "20--24", "25--29", "30--34", "35--39", "40--44", "45--49")
+df %>%
+  gather(key = age, value = tfr_value, tfr_1519yo:tfr_4549yo, factor_key = TRUE) %>%
+  ggplot(mapping = aes(x = year, y = tfr_value, 
+         col = factor(age, labels = age_label))) +
+  geom_vline(xintercept = 1980, linetype = 1, alpha = 0.25) +
+  geom_vline(xintercept = c(1964, 1985, 1998, 2001, 2009), linetype = 2, alpha = 0.4) +
+  annotate("rect", xmin = 1969, xmax = 1972, ymin = -Inf, ymax = Inf, alpha = .2) +
+  geom_line(size = 0.45) + 
+  geom_point(col = "white", size = 1.2) +
+  geom_point(size = 0.8) +
+  scale_x_continuous(breaks = seq.int(from = 1960, to = 2016, by = 1), 
+                     labels = year_label) +
+  scale_y_continuous(breaks = seq.int(from = 0, to = 350, by = 50), 
+                     limits = c(0,350)) + 
+  scale_colour_brewer(palette = "Dark2") +
+  theme_bw() +
+  theme(panel.grid.minor = element_blank(),
+        legend.position = "bottom",
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 8),
+        legend.margin=margin(t = -0.25, r = 0, b = 0, l = 0, unit = "cm"),
+        title = element_text(size = 10.5)) + 
+  guides(colour = guide_legend(nrow = 1)) +
+  labs(x = "Year",
+       y = "Total fertility rate (per 1,000 females)",
+       col = "Age group (years)",
+       title = "Total fertility rate (per 1,000 females) by age group in Singapore, 1960--2016",
+       subtitle = "Total fertility rate data from www.singstat.gov.sg. GDP growth data from www.worldbank.org/",
+       caption = "Dashed lines. Negative GDP growth in 1964, 1985, 1998, 2001, 2009.\n Shaded area. Population planning campaign, 'Stop-at-Two (children)', 1969--1972.\n Solid line. Data before 1980 refer to: 'Total population'. Data from 1980 refer to: 'Residents'.")
+```
+
++ Overall, there was a downward trend in the TFR across all age groups.
+
++ In `r min(df$year)`, women who were 20--34 years old (from the three age groups), had the highest TFR.
+    
++ In `r max(df$year)`,women who were 25--39 years old (from the three age groups), had the highest TFR. 
+
++ The TFR for women who were 20--24 years old declined drastically. 
+    + Up until the early 1980s, the TFR was very similar to the TFR of women who were 30--34 years old. 
+    
+    + From then, the TFR for women who were 20--24 years old started to decline rapidly while the TFR for women who were 30--34 years old started to increase rather rapidly.
+    
+    + By `r max(df$year)`, the TFR for the 20--24 year-olds was closest to the TFR of the 40--44 year-olds.
