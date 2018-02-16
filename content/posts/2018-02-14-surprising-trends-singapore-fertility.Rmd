@@ -63,7 +63,9 @@ year_label <- c("1960", y_skip, "1965", y_skip, "1970", y_skip, "1975",
 
 For a country to survive and prosper, its population needs to produce enough children to replace itself. To achieve this, each woman has to give birth to at least 2 (living) children during her childbearing years. 
 
-The average number of children per woman is also known as the **total fertility rate (TFR)**. The TFR needed for a population to replace itself is 2.1.^[ Assuming no net migration and unchanged mortality.] This means that, on average, each woman must give birth to 2.1 children.^[There is no such thing as 0.1 child. The number, 2.1, represents the _average_ number of children each woman in the entire population needs to give birth to. It may be more intuitive to think of it as at least 2 children.] This number, 2.1, is known as the **replacement-level fertility**. Anything below 2.1 is known as 'below-replacement fertility', and anything below 1.3 is known as 'very low fertility'.
+The average number of children per woman is also known as the **total fertility rate (TFR)**. The TFR needed for a population to replace itself is 2.1.^[ Assuming no net migration and unchanged mortality.] This means that, on average, each woman must give birth to 2.1 children.^[There is no such thing as 0.1 child. 2.1, represents the _average_ number of children each woman in the entire population needs to give birth to. It may be more intuitive to think of it as at least 2 children.] 
+
+A TFR of 2.1, is known as the **replacement-level fertility**. Anything below 2.1 is known as 'below-replacement fertility'. Anything below 1.3 is known as 'very low fertility'.
 
 We can use publicly available data^[Annual GDP growth (%) data from: https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG?locations=SG] from the Singapore government to find out:
 
@@ -121,6 +123,7 @@ df %>%
 Chinese new year usually begins in late January or February. This year, the first day of Chinese new year is on 16 February. Each year represented by one of 12 animals and this year is the year of the Dog. We can see some rough trends over the years^[The numbers are an approximation and won't be entirely accurate because of differences in the Chinese and conventional, Gregorian, calendars. For example, when the new year starts.]. 
      
 + There is usually a bump in the TFR during the year of the Dragon, but a drop during the year of the Tiger. 
+
     + It is considered [lucky to be born in the year of the Dragon (click to read more)](https://www.wsj.com/articles/SB10001424052970203806504577177011519558088), but [unlucky to be born in the year of the Tiger, especially for women (click to read more)](http://www.chinadaily.com.cn/china/2010-02/12/content_9465802.htm). 
 
 + On average, from 1960 to 2016, the TFR is highest in the years of the Dragon but lowest in the years of the Tiger among the zodiac signs:
