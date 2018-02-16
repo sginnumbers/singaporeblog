@@ -118,7 +118,7 @@ df %>%
  
 + Interestingly, the TFR remained quite constant from 1969 to 1972. These were the years of the [government's population planning campaign to discourage families from having more than two children (click to read more)](https://en.wikipedia.org/wiki/Population_planning_in_Singapore). Three years later, the TFR dropped to around 2 and continued to decrease after. 
 
-Chinese new year usually begins in late January or February. This year, the first day of Chinese new year is on 16 February. Each year represented by one of 12 animals and this year is the year of the Dog. We can see some rough trends over the years^[The numbers are an approximation and won't be entirely accurate because of the difference in the Chinese and conventional, Gregorian, calendars.]. 
+Chinese new year usually begins in late January or February. This year, the first day of Chinese new year is on 16 February. Each year represented by one of 12 animals and this year is the year of the Dog. We can see some rough trends over the years^[The numbers are an approximation and won't be entirely accurate because of differences in the Chinese and conventional, Gregorian, calendars. For example, when the new year starts.]. 
      
 + There is usually a bump in the TFR during the year of the Dragon, but a drop during the year of the Tiger. 
     + It is considered [lucky to be born in the year of the Dragon (click to read more)](https://www.wsj.com/articles/SB10001424052970203806504577177011519558088), but [unlucky to be born in the year of the Tiger, especially for women (click to read more)](http://www.chinadaily.com.cn/china/2010-02/12/content_9465802.htm). 
@@ -230,7 +230,7 @@ df %>%
 + In `r max(df$year)`,women who were 25--39 years old (from the three age groups), had the highest TFR. 
 
 + The TFR for women who were 20--24 years old declined drastically. 
-    + Up until the early 1980s, the TFR was very similar to the TFR of women who were 30--34 years old. 
+    + Up until the early 1980s, the TFR was very similar to the TFR of women who were 30--34 years old (see the yellow and pink lines). 
     
     + From then, the TFR for women who were 20--24 years old started to decline rapidly while the TFR for women who were 30--34 years old started to increase rather rapidly.
     
