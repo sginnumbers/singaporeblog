@@ -174,7 +174,7 @@ df %>%
 + There is an overall downward trend in the TFR across the three major ethnic groups over the years. In 2016, the TFR for all three groups was below 2.1. 
     + In `r min(df$year)`, Indian females had the _highest_ TFR (`r df$tfr_indian[df$year==min(df$year)]`), followed by Malay females (`r df$tfr_malay[df$year==min(df$year)]`), and then Chinese females (`r df$tfr_chinese[df$year==min(df$year)]`).
     
-    + In `r max(df$year)`, Indian females had  the _lowest_ TFR (`r df$tfr_indian[df$year==max(df$year)]`). Malay females had the highest TFR (`r df$tfr_malay[df$year==max(df$year)]`), and Chinese females were second with a TFR of (`r df$tfr_chinese[df$year==max(df$year)]`), which is just slightly higher than the TFR of Indian females.
+    + In `r max(df$year)`, Indian females had  the _lowest_ TFR (`r df$tfr_indian[df$year==max(df$year)]`). Malay females had the highest TFR (`r df$tfr_malay[df$year==max(df$year)]`). Chinese females were in the middle with a TFR of `r df$tfr_chinese[df$year==max(df$year)]`, which is just slightly higher than the TFR of Indian females.
   
 + Interestingly, the TFR for all three ethnic groups was very similar from 1970, which coincided with the government's population planning campaign, to 1979. 
 
@@ -183,8 +183,7 @@ df <- df %>%
   mutate(ind_yoy = tfr_indian - lag(tfr_indian),
          chi_yoy = tfr_chinese - lag(tfr_chinese))
 ```
-    + There was a drastic drop in the TFR for Indian females from 1969 to 1970. This was the biggest year-over-year drop (of `r min(df$ind_yoy, na.rm = TRUE)`
-) in the TFR for Indian females from 1960 to 2016.
+    + There was a drastic drop in the TFR for Indian females from 1969 to 1970. This was the biggest year-over-year drop (of `r min(df$ind_yoy, na.rm = TRUE)`) in the TFR for Indian females.
     
 + From 1980, a different trend for each ethnic group's TFR emerges. For example, the TFR for Malay females started to increase, and remained above the population replacement rate of 2.1 until `r min(df$year[df$tfr_malay <= 2.1 & df$year >= 1980])`.
 
