@@ -65,7 +65,7 @@ For a country to survive and prosper, its population needs to produce enough chi
 
 The average number of children per woman is also known as the **total fertility rate (TFR)**. The TFR needed for a population to replace itself is 2.1.^[ Assuming no net migration and unchanged mortality.] This means that, on average, each woman must give birth to 2.1 children.^[There is no such thing as 0.1 child. 2.1, represents the _average_ number of children each woman in the entire population needs to give birth to. It may be more intuitive to think of it as at least 2 children.] 
 
-A TFR of 2.1, is known as the **replacement-level fertility**. Anything below 2.1 is known as 'below-replacement fertility'. Anything below 1.3 is known as 'very low fertility'.
+A TFR of 2.1 is known as the **replacement-level fertility**. Anything below 2.1 is known as 'below-replacement fertility'. Anything below 1.3 is known as 'very low fertility'.
 
 We can use publicly available data^[Annual GDP growth (%) data from: https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG?locations=SG] from the Singapore government to find out:
 
@@ -174,7 +174,7 @@ df %>%
 + There is an overall downward trend in the TFR across the three major ethnic groups over the years. In 2016, the TFR for all three groups was below 2.1. 
     + In `r min(df$year)`, Indian females had the _highest_ TFR (`r df$tfr_indian[df$year==min(df$year)]`), followed by Malay females (`r df$tfr_malay[df$year==min(df$year)]`), and then Chinese females (`r df$tfr_chinese[df$year==min(df$year)]`).
     
-    + In `r min(df$year)`, Indian females had  the _lowest_ TFR (`r df$tfr_indian[df$year==max(df$year)]`). Malay females had the highest TFR (`r df$tfr_malay[df$year==max(df$year)]`), and Chinese females were second with a TFR of (`r df$tfr_chinese[df$year==max(df$year)]`), which is just slightly higher than the TFR of Indian females.
+    + In `r max(df$year)`, Indian females had  the _lowest_ TFR (`r df$tfr_indian[df$year==max(df$year)]`). Malay females had the highest TFR (`r df$tfr_malay[df$year==max(df$year)]`), and Chinese females were second with a TFR of (`r df$tfr_chinese[df$year==max(df$year)]`), which is just slightly higher than the TFR of Indian females.
   
 + Interestingly, the TFR for all three ethnic groups was very similar from 1970, which coincided with the government's population planning campaign, to 1979. 
 
@@ -228,9 +228,9 @@ df %>%
 
 + Overall, there was a downward trend in the TFR across all age groups.
 
-+ In `r min(df$year)`, women who were 20--34 years old (from the three age groups), had the highest TFR.
++ In `r min(df$year)`, women who were 20--34 years old (from the three age groups) had the highest TFR.
     
-+ In `r max(df$year)`,women who were 25--39 years old (from the three age groups), had the highest TFR. 
++ In `r max(df$year)`, women who were 25--39 years old (from the three age groups) had the highest TFR. 
 
 + The TFR for women who were 20--24 years old declined drastically. 
     + Up until the early 1980s, the TFR was very similar to the TFR of women who were 30--34 years old (see the yellow and pink lines). 
