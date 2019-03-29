@@ -52,11 +52,11 @@ df <- df_beds %>%
 
 In 2014, the main Singapore newspaper reported that public hospitals were facing a 'severe bed crunch' and putting patients in 'beds along corridors, with just curtains to give them privacy' when demand spikes.^[http://www.straitstimes.com/singapore/hospitals-facing-severe-bed-crunch-take-unusual-steps] ^[http://www.straitstimes.com/singapore/health/long-waits-at-aes-despite-more-beds] Some citizens have voiced concerns about the number of hospital beds^[https://www.theonlinecitizen.com/2010/11/22/not-so-ordinary-ordinary-singaporean-leong-sze-hian/].
 
-In this post, you will see how the number of hospital beds have _increased_, while the number of hospital beds per 1,000 people have _decreased_, over the years. ^[Data available from 1960 to 2014: https://data.gov.sg/dataset/21d426ab-3a21-46ae-8602-99a5a1968593/download, accessed 06 Feb 2017] The downward trend in the number of hospital beds per 1,000 people in Singapore is consistent with most OECD countries. Some possible reasons for this trend are given at the end.
+In this post, you will see how the number of hospital beds has _increased_, while the number of hospital beds per 1,000 people has _decreased_, over the years. ^[Data available from 1960 to 2014: https://data.gov.sg/dataset/21d426ab-3a21-46ae-8602-99a5a1968593/download, accessed 06 Feb 2017] The downward trend in the number of hospital beds per 1,000 people in Singapore is consistent with most OECD countries. Some possible reasons for this trend are given at the end.
 
 
 ## Total number of hospital beds in Singapore
-The total number of hospital beds in Singaporeincreased from `r formatC(df$all_beds[df$year==1960], big.mark = ",")` in 1960 to `r formatC(df$all_beds[df$year==2014], big.mark = ",", format = "d")` in 2014, which is a `r round(((df$all_beds[df$year==2014] - df$all_beds[df$year==1960])/df$all_beds[df$year==1960])*100, digits = 1)`% change. The chart below shows the number of private and public hospital beds for each year from 1960 to 2014^[From the metadata provided: 'Public sector hospitals include government hospitals, government restructured hospitals and specialty centres'. 'Private sector hospitals include community hospitals and chronic sick hospitals.'].
+The total number of hospital beds in Singapore increased from `r formatC(df$all_beds[df$year==1960], big.mark = ",")` in 1960 to `r formatC(df$all_beds[df$year==2014], big.mark = ",", format = "d")` in 2014, which is a `r round(((df$all_beds[df$year==2014] - df$all_beds[df$year==1960])/df$all_beds[df$year==1960])*100, digits = 1)`% change. The chart below shows the number of private and public hospital beds for each year from 1960 to 2014^[From the metadata provided: 'Public sector hospitals include government hospitals, government restructured hospitals and specialty centres'. 'Private sector hospitals include community hospitals and chronic sick hospitals.'].
 
 ```{r, fig.align='center'}
 blank_9 <- rep("", 9)
@@ -101,7 +101,8 @@ df %>%
 
 ```{r }
 df_1k <- df %>%
-  mutate(all_1k = (all_beds/total_population)*1000)
+  mutate(all_1k = (all_beds/total_population)*1000,
+         all_1k2 = all_beds * (total_population/1000))
 ```
 
 Singapore's total population has changed over the years ([see previous blog post by clicking here](https://numbers.sg/posts/the-number-of-citizens-permanent-residents-and-non-residents-in-singapore/)). We can take this into consideration by calculating how many hospital beds there are, on average, for every 1,000 people in Singapore. The chart below shows the number of private and public hospital beds per 1,000 people from `r min(df_1k$year)` to `r max(df_1k$year)`. 
@@ -163,7 +164,7 @@ oecd_other <- oecd %>%
   rbind(sg)
 ```
 
-The chart below shows how Singapore (SGP) compares with `r length(unique(oecd$country))` OECD member and key partner countries^[list of countries and OECD data: https://data.oecd.org/healtheqt/hospital-beds.htm, accessed 27 March 2019]. To make the chart easier to read, only a few countries are labelled and emphasised^[JPN: Japan, KOR: Korea, CHN: China, USA: United States of America, GBR: Great Britain, SGP: Singapore, IND: India].
+The chart below shows how Singapore (SGP) compares with `r length(unique(oecd$country))` OECD member and key partner countries^[list of countries and OECD data: https://data.oecd.org/healtheqt/hospital-beds.htm, accessed 27 March 2019]. To make the chart easier to read, only a few countries are labelled and emphasised^[JPN: Japan, KOR: Korea, CHN: China, USA: United States of America, GBR: United Kingdom, SGP: Singapore, IND: India].
 
 ```{r, fig.align='center'}
 oecd %>%
