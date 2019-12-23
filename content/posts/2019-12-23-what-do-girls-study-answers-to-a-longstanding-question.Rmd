@@ -1,0 +1,153 @@
+---
+title: What do girls study? Answers to a longstanding question
+author: Kenneth Lim
+date: '2019-12-23'
+slug: what-do-girls-study-answers-to-a-longstanding-question
+categories:
+  - education
+tags:
+  - polytechnic
+  - females
+output:
+  blogdown::html_page:
+    fig_width: 7
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(dplyr)
+library(ggplot2)
+library(knitr)
+library(kableExtra)
+theme_set(theme_bw())
+
+nyp_intake <- read.csv("~/Documents/backup/R/data_gov_sg/education_20190328/nanyang-polytechnic-student-intake-annual/nanyang-polytechnic-full-time-student-intake.csv")
+
+nyp_intake <- nyp_intake %>%
+  rename(year = academic_year,
+         sem = semester,
+         course = course_name) %>%
+  mutate(course = sub("Diploma In ", "", course),
+         school = sub("School Of ", "", school))
+
+```
+
+```{r sexcourseprep}
+# Average, 2013-2016 ------------------------------------------------------
+
+##Long to wide
+nyp_wide <- nyp_intake %>%
+  tidyr::spread(sem, intake, fill = 0) %>%
+  mutate(total = S1 + S2) %>% #Add intake from Sem 1 and Sem 2 in a given year
+  select(-c(S1, S2)) %>% #Remove S1 and S2, now redundant
+  tidyr::spread(gender, total, fill = 0) 
+
+nyp_agg <- nyp_wide %>% #Get no. intake by sex (wide format)
+  group_by(school, course) %>%
+  summarise(Female = sum(Female),
+            Male = sum(Male),
+            Total = Male + Female,
+            F_prop = Female / Total) %>%
+  ungroup() 
+
+
+sch_avg <- nyp_agg %>%
+  group_by(school) %>%
+  summarise(total_f = sum(Female),
+            total = sum(Total), 
+            avg = total_f / total * 100) %>%
+  arrange(desc(avg))
+```
+  
+
+Many years ago, while I was a student in a polytechnic, I would come across a frequent topic of intense sociological debate among many of my (male) peers: 'Where are all the girls (studying)?' There were many conflicting theories about the gender mix across the different schools and courses. However, no one could provide definite answers or accurate estimates. Until now.
+
+I will use data from the polytechnic I attended to better understand the courses men and women end up taking. Results from this (fun) post will address an age-old sociological question and settle long-standing debates.
+
+The chart below shows the percentage of female students in each course across all schools in Nanyang Polytechnic from 2013 to 2016. 
+
+  + Courses to the left of the vertical line at 50% had _fewer_ women than men while courses to the right had _more_ women than men.
+  + Schools with the highest percentage of female students are at the top of the chart (Health Sciences), while those with lowest are at the bottom (Engineering). 
+  + Within each school, courses are arranged from the highest (e.g. Health Sciences: Occupational Therapy) to the lowest (e.g. Health Sciences: Physiotherapy) percentage of female students.
+
+```{r nypgendercourse}
+##Get orders for plotting.
+#1. Order school by minimum female proportion
+school_order <- nyp_agg %>%
+ group_by(school) %>%
+  summarise(min = min(F_prop)) %>%
+  arrange(desc(min)) %>%
+  distinct(school) %>%
+  unlist() 
+
+#2. Order courses within a school by female proportion
+####Keeping the order of schools from #1. above
+course_order <- nyp_agg %>%
+  mutate(school = factor(school, levels = school_order)) %>%
+  group_by(school) %>%
+  arrange(desc(school), F_prop) %>%
+  ungroup() %>%
+  distinct(course) %>%
+  unlist()
+
+##Create dataset for plot background
+background <- nyp_agg %>%
+  mutate(school = factor(school, levels = rev(school_order))) %>%
+  group_by(school) %>%
+  summarise(count = n()) %>%
+  mutate(cs = cumsum(count),
+         start = c(-0.1, cs[-7]) + 0.5,
+         end = cs + 0.7,
+         col = 1:length(school),
+         label = paste("School:", school),
+         pos = cs-1.85)
+
+#Plot
+nyp_agg %>%
+  mutate(course = factor(course, levels = course_order)) %>%
+  ggplot() +
+  geom_vline(xintercept = seq(from = 1, to = nrow(nyp_agg), by = 1), 
+             alpha = 0.1, size = 0.1) +
+  geom_rect(data = background, 
+            aes(xmin = start, xmax = end, ymin = -Inf, ymax = Inf, 
+                fill = factor(col)),
+            alpha = 0.3, show.legend = FALSE) +
+  geom_hline(yintercept = 0.5, alpha = 0.3, size = 0.3) +
+  scale_x_discrete(expand = expand_scale(0.01)) +
+  scale_y_continuous(breaks = seq(from = 0, to = 1, by = 0.25),
+                     labels = seq(from = 0, to = 100, by = 25)) +
+  geom_point(aes(x = course, y = F_prop), size = 1.3) +
+  ggrepel::geom_text_repel(data = background,
+             aes(x = pos, y= 0.1, label = label),
+             size = 2.75, direction = "y", vjust = 1, hjust = 1) +
+  coord_flip() +
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_text(size = 8.5),
+        axis.text.y = element_text(size = 5),
+        axis.title.y = element_text(size = 7.5),
+        axis.title.x = element_text(size = 9),
+        title = element_text(size = 8)) +
+  labs(x = "Course name",
+       y = "Percentage of female students in course intake, 2013 to 2016 (%)",
+       title = "Health Sciences students were mostly women while Engineering students were \nmostly men. There are interesting splits within IT and Interactive & Digital Media.",
+       caption = "Chart: numbers.sg\n Data source: data.gov.sg")
+```
+
+### Key findings
+
+1. There were slightly more women (`r round(sum(nyp_agg$Female)/sum(nyp_agg$Total)*100,1)`%) than men studying in Nanyang Polytechnic from 2013 to 2016, but three out of seven schools that had more men than women: `r paste(sch_avg$school[sch_avg$avg<50][1:2], sep = ', ')`, and `r paste0(sch_avg$school[sch_avg$avg<50][3])`.
+
+2. Women made up `r round(sch_avg$avg[sch_avg$school == 'Health Sciences'], 0)`% of students in Health Sciences but only a quarter of students in Engineering.
+
+3. Even within the three schools with more men than women, there were surprising gender splits in the courses. 
+    * **Information Technology**: Women made up about half of the students in business-focussed courses but only about a quarter in the other courses (see green panel in chart).
+    
+    * **Interactive & Digital Media**: Women made up about 60% to 70% of students in half of the courses but only 10% in two courses related to games.
+    
+    * **Engineering**: Women made up a quarter to a third of students in most courses, and less than 15% of students in manufacturing, mechatronics and aerospace engineering courses. Biomedical Engineering was the only course with slightly more women than men.
+
+### Summary
+Results from this sociological investigation provided definitive answers to a long-standing question on the gender mix across the different schools and courses. Future generations of a specific student demographic will likely continue to find these results useful, especially with more up-to-date data.
+
+I hope you enjoyed this light-hearted post. Happy holidays!
