@@ -18,8 +18,6 @@ knitr::opts_chunk$set(echo = FALSE)
 
 library(dplyr)
 library(ggplot2)
-library(knitr)
-library(kableExtra)
 theme_set(theme_bw())
 
 nyp_intake <- read.csv("~/Documents/backup/R/data_gov_sg/education_20190328/nanyang-polytechnic-student-intake-annual/nanyang-polytechnic-full-time-student-intake.csv")
@@ -130,7 +128,7 @@ nyp_agg %>%
         title = element_text(size = 8)) +
   labs(x = "Course name",
        y = "Percentage of female students in course intake, 2013 to 2016 (%)",
-       title = "Health Sciences students were mostly women while Engineering students were \nmostly men. There are interesting splits within IT and Interactive & Digital Media.",
+       title = "Health Sciences students were mostly women while Engineering students were \nmostly men. There were interesting splits within IT and Interactive & Digital Media.",
        caption = "Chart: numbers.sg\n Data source: data.gov.sg")
 ```
 
@@ -150,4 +148,4 @@ nyp_agg %>%
 ### Summary
 Results from this sociological investigation provided definitive answers to a long-standing question on the gender mix across the different schools and courses. Future generations of a specific student demographic will likely continue to find these results useful, especially with more up-to-date data.
 
-I hope you enjoyed this light-hearted post. Happy holidays!
+I hope you enjoyed this lighthearted post. Happy holidays!^[Thanks to David Selby and Lewis Rendell for the great discussion that led to the creation of the chart shown!]
