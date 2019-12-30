@@ -11,7 +11,7 @@ tags:
   - communication
   - ggplot2
   - seaborn
-  - R&Python4DataScience
+  - RvsPython4DataScience
 output:
   blogdown::html_page:
     toc: false
