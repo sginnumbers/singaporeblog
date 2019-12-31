@@ -7,11 +7,9 @@ categories:
   - visualisation
 tags:
   - dataviz
-  - bestpractices
-  - communication
   - ggplot2
   - seaborn
-  - RvsPython4DataScience
+  - PythonvsR
 output:
   blogdown::html_page:
     toc: false
