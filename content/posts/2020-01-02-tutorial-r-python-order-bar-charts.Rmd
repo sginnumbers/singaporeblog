@@ -60,7 +60,7 @@ I will first create a bar chart with default options, which automatically orders
 
 In the code examples below, the data set will be called `cereal`. The bar chart will have the cereal brand on the horizontal axis and the calories per serving on the vertical axis (termed `brand` and `calories` respectively in the code examples below).
 
-### R (ggplot2)
+### R (using ggplot2)
 
 ```{r defaultbareg, eval=FALSE, echo=TRUE}
 library(ggplot2) #the library you need
@@ -105,7 +105,7 @@ ggplot(data = cereal,
 
 In the second line of `ggplot`, `x = brand` changed to `x = reorder(brand, -calories)`.
 
-### Python (seaborn)
+### Python (using seaborn)
 
 ```{r pydefault, eval=FALSE, echo=TRUE}
 import seaborn as sns  #the library you need

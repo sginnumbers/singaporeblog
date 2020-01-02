@@ -27,8 +27,8 @@ tags:
 <p>I will use the US cereal dataset to reproduce some charts from an <a href="https://numbers.sg/posts/how-to-display-data-in-the-business-world/">earlier blogpost on creating effective charts for a business audience</a> that I wrote with my colleague, <a href="https://rachaeldottle.com/">Rachael Dottle</a>.</p>
 <p>I will first create a bar chart with default options, which automatically orders the categories alphabetically, then a bar chart ordered by size, where the bars are arranged in a descending order. A simple tweak in <strong>ONE</strong> line of code in both R and Python will produce a more attractive and informative chart.</p>
 <p>In the code examples below, the data set will be called <code>cereal</code>. The bar chart will have the cereal brand on the horizontal axis and the calories per serving on the vertical axis (termed <code>brand</code> and <code>calories</code> respectively in the code examples below).</p>
-<div id="r-ggplot2" class="section level3">
-<h3>R (ggplot2)</h3>
+<div id="r-using-ggplot2" class="section level3">
+<h3>R (using ggplot2)</h3>
 <pre class="r"><code>library(ggplot2) #the library you need
 ggplot(data = cereal, 
        aes(x = brand, y = calories)) + 
@@ -43,8 +43,8 @@ ggplot(data = cereal,
 <p>In the second line of <code>ggplot</code>, <code>x = brand</code> changed to <code>x = reorder(brand, -calories)</code>.</p>
 </div>
 </div>
-<div id="python-seaborn" class="section level3">
-<h3>Python (seaborn)</h3>
+<div id="python-using-seaborn" class="section level3">
+<h3>Python (using seaborn)</h3>
 <pre class="r"><code>import seaborn as sns  #the library you need
 sns.barplot(x = &#39;brand&#39;, y = &#39;calories&#39;, color=&#39;gray&#39;, 
             data = cereal)</code></pre>
