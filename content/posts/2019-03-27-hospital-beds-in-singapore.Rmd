@@ -5,8 +5,8 @@ date: '2019-03-28'
 slug: hospital-beds-in-singapore
 categories:
   - singapore
-  - health
 tags:
+  - health
   - hospital
   - population
 output:

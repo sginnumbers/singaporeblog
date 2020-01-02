@@ -4,10 +4,10 @@ author: Kenneth Lim
 date: '2017-12-29'
 slug: car-prices
 categories: 
-  - transport
+  - singapore
 tags: 
   - cars
-  - coe
+  - transport
 output:
   blogdown::html_page:
     toc: false

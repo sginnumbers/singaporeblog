@@ -4,12 +4,11 @@ author: Kenneth Lim
 date: '2017-12-10'
 slug: singapore-sex-ratio
 categories:
-  - population
+  - singapore
 tags:
-  - males
-  - females
+  - population
+  - gender
   - ethnicity
-  - sex ratio
 draft: no
 output:
   blogdown::html_page:

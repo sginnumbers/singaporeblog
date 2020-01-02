@@ -5,10 +5,10 @@ date: '2019-12-23'
 slug: what-do-girls-study-answers-to-a-longstanding-question
 categories:
   - singapore
-  - education
 tags:
+  - education
   - polytechnic
-  - females
+  - gender
 output:
   blogdown::html_page:
     fig_width: 7

@@ -4,11 +4,9 @@ author: Kenneth Lim
 date: '2017-11-26'
 slug: the-number-of-citizens-permanent-residents-and-non-residents-in-singapore
 categories:
-  - population
+  - singapore
 tags:
-  - residents
-  - permanent residents
-  - non-residents
+  - population
 output:
   blogdown::html_page:
     toc: true

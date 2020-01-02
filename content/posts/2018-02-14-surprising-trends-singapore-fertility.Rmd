@@ -4,8 +4,9 @@ author: Kenneth Lim
 date: '2018-02-16'
 slug: surprising-trends-singapore-fertility
 categories:
-  - population
+  - singapore
 tags:
+  - population
   - fertility
   - zodiac
 output:
