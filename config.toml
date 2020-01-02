@@ -1,5 +1,5 @@
 baseurl = "https://www.numbers.sg/"
-title = "Singapore in numbers"
+title = "Singapore & more in numbers"
 copyright = ""
 canonifyurls = true
 theme = "hugo-kiera"
@@ -28,6 +28,6 @@ pygmentsCodeFences = true
     weight = 1
 
 [params]
-    tagline = "Understanding Singapore through numbers, data, and statistics"
+    tagline = "Understanding Singapore and the world through numbers, data, and statistics"
 
 
