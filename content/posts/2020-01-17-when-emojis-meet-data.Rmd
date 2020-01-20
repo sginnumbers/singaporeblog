@@ -13,7 +13,7 @@ I laughed so hard making this chart. I never knew making charts could be this fu
 
 About a year ago, I signed up to give a presentation on visualising the harmful effects of drugs^[Warwick R User Group event: https://www.meetup.com/Warwick-useRs/events/259364376/]. I wanted to do something different, to talk about data to a wider group of people who might not always be interested in reading charts.
 
-[Lewis](https://ch.linkedin.com/in/lewis-rendell-729a785a)</span>, my office mate and friend, suggested I use emojis. I thought he was joking. Who uses emojis in a chart?! But Lewis was serious and I had to agree that emojis are easy to understand and can make abstract data more relatable.
+Lewis, my office mate and friend, suggested I use emojis. I thought he was joking. Who uses emojis in a chart?! But Lewis was serious and I had to agree that emojis are easy to understand and can make abstract data more relatable.
 
 `r emo::ji('thinking')` But how can we use emojis in charts?
 
