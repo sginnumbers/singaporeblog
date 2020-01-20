@@ -9,9 +9,9 @@ tags:
   - R
   - ggplot2
 ---
-I laughed so hard making this chart. I never knew making charts could be this fun. Aren't charts supposed to be serious and professional looking? Not always, as I found out `r emo::ji('wink')` 
+Aren't charts supposed to be serious and professional looking? Not always, as I found out.
 
-About a year ago, I signed up to give a presentation on visualising the harmful effects of drugs^[Warwick R User Group event: https://www.meetup.com/Warwick-useRs/events/259364376/]. I wanted to do something different, to talk about data to a wider group of people who might not always be interested in reading charts.
+About a year ago, I signed up to give a presentation on visualising the harmful effects of drugs. I wanted to do something different, to talk about data to a wider group of people who might not always be interested in reading charts.
 
 Lewis, my office mate and friend, suggested I use emojis. I thought he was joking. Who uses emojis in a chart?! But Lewis was serious and I had to agree that emojis are easy to understand and can make abstract data more relatable.
 
@@ -23,7 +23,7 @@ Lewis brings the portable whiteboard and begins to draw and explain. The chart w
 ![Lewis' drawing in the Warwick Statistics office room](https://warwick.ac.uk/fac/sci/statistics/staff/research_students/lim/img_5542.jpg){width=450px}
 </p>
 
-I burst out LAUGHING `r emo::ji('joy')` `r emo::ji('joy')` `r emo::ji('joy')`
+I loved it!
 
 It was cute, funny and intuitive. Drug harm data became more accessible, they were not just abstract dots or bars. It was also easy to understand and remember the link between each emoji and type of harm.
 
