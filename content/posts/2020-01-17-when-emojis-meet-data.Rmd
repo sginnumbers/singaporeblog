@@ -120,7 +120,7 @@ Drugs are bad. They hook you and you end up hurting those around you. Also:
 
 ## Conclusion
 
-I realised there's more than one way to make a chart. Stay tuned to see how I did it with code. Meanwhile, here's a non-alcoholic toast `r emo::ji('beers')`
+I realised there's more than one way to make a chart. Stay tuned to see how I did it with code.
 
 ```{r nodrugs, fig.showtext=TRUE, echo=FALSE}
 
