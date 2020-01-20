@@ -1,0 +1,134 @@
+---
+title: When Emojis Meet Data
+author: Kenneth Lim
+date: '2020-01-20'
+slug: when-emojis-meet-data
+categories:
+  - emojis
+tags:
+  - R
+  - ggplot2
+---
+I laughed so hard making this chart. I never knew making charts could be this fun. Aren't charts supposed to be serious and professional looking? Not always, as I found out `r emo::ji('wink')` 
+
+About a year ago, I signed up to give a presentation on visualising the harmful effects of drugs^[Warwick R User Group event: https://www.meetup.com/Warwick-useRs/events/259364376/]. I wanted to do something different, to talk about data to a wider group of people who might not always be interested in reading charts.
+
+[Lewis](https://ch.linkedin.com/in/lewis-rendell-729a785a)</span>, my office mate and friend, suggested I use emojis. I thought he was joking. Who uses emojis in a chart?! But Lewis was serious and I had to agree that emojis are easy to understand and can make abstract data more relatable.
+
+`r emo::ji('thinking')` But how can we use emojis in charts?
+
+Lewis brings the portable whiteboard and begins to draw and explain. The chart will show the average level of physical harm, dependence, and social harm caused by each drug. A different emoji would represent each of type of harm. 
+
+<p style="text-align:center;">
+![Lewis' drawing in the Warwick Statistics office room](https://warwick.ac.uk/fac/sci/statistics/staff/research_students/lim/img_5542.jpg){width=450px}
+</p>
+
+I burst out LAUGHING `r emo::ji('joy')` `r emo::ji('joy')` `r emo::ji('joy')`
+
+It was cute, funny and intuitive. Drug harm data became more accessible, they were not just abstract dots or bars. It was also easy to understand and remember the link between each emoji and type of harm.
+
+`r emo::ji('no_entry')` There was only one problem. How do I turn the whiteboard drawing into an actual chart on a computer? Charts usually have dots, bars and lines. I've never seen the option to use emojis to create charts on a computer.
+
+I eventually found a way and represented the different harm types with these emojis:
+
++ Social harm: `r emo::ji("broken")` (heart break for others)
+
++ Physical harm: `r emo::ji("punch")` (punch)
+
++ Dependence: `r emo::ji("fishing_pole_and_fish")` (hooked...)
+
+```{r setup, warning=FALSE, message=FALSE, echo=FALSE}
+#Load the following libraries (install if you don't have them)
+library(rvest) #Scrape web pages
+library(dplyr) #Data manipulation
+library(ggplot2) #Data visualisation
+library(emo) #emoji package for getting symbols, install from here: https://github.com/hadley/emo
+library(emojifont) #emoji package for plotting, install from here: https://github.com/GuangchuangYu/emojifont
+library(knitr) #Display nicer looking tables in html file
+library(tidyr) #Reshape data (wide to long)
+library(gridExtra) #Put plots side by side in html file
+
+#Read data from webpage and extract the data table
+url <- "https://commons.wikimedia.org/wiki/File:Development_of_a_rational_scale_to_assess_the_harm_of_drugs_of_potential_misuse_(physical_harm_and_dependence,_NA_free_means).svg#Data"
+pg <- read_html(url)
+tab <- html_table(pg, fill = TRUE, header = TRUE)[[5]] #table stored in the 5th element of the list (visual inspection)
+```
+
+```{r echo=FALSE}
+#Select the relevant columns/variables
+#Rename the variables
+#Reshape data from wide to long (tidyr::gather)
+tab <- tab %>%
+  select("Drug", "MeanNA=0 Physical harm[3]", "Mean Dependence", "Mean Social harm") %>%
+  rename(mean_physical = "MeanNA=0 Physical harm[3]",
+         mean_dependence = "Mean Dependence",
+         mean_social = "Mean Social harm") %>% 
+  tidyr::gather("category", "score", mean_physical:mean_social)
+
+#Create a new column called emo, 
+##which takes different emojis depending on the category
+tab$emo[tab$category=="mean_physical"] <- emo::ji("punch")
+tab$emo[tab$category=="mean_dependence"] <- emo::ji("fishing_pole_and_fish")
+tab$emo[tab$category=="mean_social"] <- emo::ji("broken")
+#Had to replace punch emoji for the nauseated face emoji on the whiteboard
+```
+
+```{r emojiplot, fig.showtext=TRUE, warning = FALSE, message = FALSE, echo=FALSE}
+id_order <- tab %>%
+  ungroup() %>%
+  arrange(category, score) %>% #arrange category and then scores within
+  distinct(Drug) %>% #get unique value of drug
+  unlist()
+#id_order: order of Drugs that will be used for subsequent plot
+
+#emojifont::list.emojifonts()
+emojifont::load.emojifont('OpenSansEmoji.ttf') #load this for graphical display
+
+#Plot with emoji
+tab %>%
+  ggplot(aes(x = factor(Drug, levels = id_order), y = score, col = category)) +
+  geom_point(size = 0, alpha = 0) + #hide points as work around; only for legend purposes
+  geom_text(aes(label = emo), family="OpenSansEmoji", size = 4.75, show.legend = FALSE) +
+  #emoji as text, and hide legends (use legends from geom_point())
+  scale_y_continuous(breaks = seq(from = 0.5, to = 3, by = 0.5)) +
+  scale_colour_manual(labels = c("Dependence (hook)", "Physical harm (punch)", "Social harm (heart)"), values = c("blue", "black", "red")) + #change labels and colours manually
+  coord_flip() + #flip coordinates for horizontal x axis
+  theme_bw() +
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank(), #just keep the horizontal grid lines
+        axis.text = element_text(size = 9.5),
+        axis.title = element_text(size = 9.5),
+        legend.position = "bottom",
+        legend.text = element_text(size = 10)) +
+  labs(x = "Drug",
+       y = "Average level of harm (0: no risk, 3: extreme risk)",
+       col = "",
+       title = "Drugs are bad. You get hooked and hurt those around you.",
+       caption = "Chart: numbers.sg / Data source: Nutt et al. 2007 Lancet") +
+  guides(col = guide_legend(override.aes = list(size = 2.25, alpha = 1))) #Legend: increase size and transparency of points
+```
+
+Drugs are bad. They hook you and you end up hurting those around you. Also:
+
++ Heroin and Cocaine are _really_ bad `r emo::ji("broken")` `r emo::ji("punch")` `r emo::ji("fishing_pole_and_fish")`
+
++ Alcohol is worse than Cocaine for social harm `r emo::ji("broken")`
+
++ Ketamine leads to quite high levels of physical harm `r emo::ji("punch")`
+
++ I had expected Cannabis' dependence score to be lower `r emo::ji("fishing_pole_and_fish")`
+
+## Conclusion
+
+I realised there's more than one way to make a chart. Stay tuned to see how I did it with code. Meanwhile, here's a non-alcoholic toast `r emo::ji('beers')`
+
+```{r nodrugs, fig.showtext=TRUE, echo=FALSE}
+
+p1 <- ggplot() +  geom_emoji("pill", color = "blue", size = 50) + geom_fontawesome("fa-ban", color='red', size = 45) + theme_void()
+
+p2 <- ggplot() +  geom_emoji("smoking", color = "black", size = 50) + geom_fontawesome("fa-ban", color='red', size = 45) + theme_void()
+
+p3 <- ggplot() +  geom_emoji("beers", color = "black", size = 50) + geom_fontawesome("fa-ban", color='red', size = 40) + theme_void()
+
+gridExtra::grid.arrange(p1, p2, p3, ncol = 3)
+```
