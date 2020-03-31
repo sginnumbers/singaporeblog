@@ -1,5 +1,5 @@
 baseurl = "https://www.numbers.sg/"
-title = "Singapore & more in numbers"
+title = “Numbers, data, and statistics made easy”
 copyright = ""
 canonifyurls = true
 theme = "hugo-kiera"
