@@ -1,0 +1,126 @@
+---
+title: 'Data in the iron mask: How to protect important and sensitive information'
+author: 'Kenneth Lim, Matthew Yerbury, Nicholas Biller'
+date: '2020-03-31'
+slug: data-in-the-iron-mask
+categories:
+  - tutorial
+tags:
+  - masking
+  - privacy
+---
+
+
+
+<p>🎭 This is a special post co-authored with <a href="https://uk.linkedin.com/in/matthew-yerbury-306849b">Matthew Yerbury</a> and <a href="https://uk.linkedin.com/in/nicholas-biller-212b5298">Nicholas Biller</a>, friends from HSBC’s People Data Science team. We use a Hollywood film from the 1990s to introduce the concept of data masking in a fun way!<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<p>In <em>The Man in the Iron Mask</em> film, King Louis XIV was kidnapped, put in an iron mask, and replaced by his secret identical twin brother. Putting King Louis behind the mask kept his identity hidden—until the mask was unlocked by a key.</p>
+<p>This story can help us understand the concept of data masking, which involves hiding and replacing original data with a scrambled copy. Just like how no one could identify King Louis because his most important features were hidden behind a mask.</p>
+<p><img src="/posts/2020-03-13-data-in-the-iron-mask_files/mtim_blog.png" />
+<small>Original images from: Wikimedia Commons, Alamy</small></p>
+<p>In this post, we introduce the basics of data masking. We share some common data masking techniques and a simple flow chart to help practitioners consider when and which masking techniques may be needed.</p>
+<div id="why-mask-data" class="section level2">
+<h2>Why mask data?</h2>
+<p>Data are masked to protect important but sensitive personal information. Companies have to follow strict legal regulations and ethical obligations surrounding how they use and share sensitive personal data to respect peoples’ right to anonymity.</p>
+<p>As more companies move towards storing data in the cloud, they need to make sure that sensitive customer or employee information remain protected.</p>
+</div>
+<div id="data-masking-methods" class="section level2">
+<h2>Data masking methods</h2>
+<p>Data can be masked using <strong>anonymisation</strong> or <strong>pseudonymisation</strong> techniques, depending on the level of data protection needed.</p>
+<p><strong>Anonymisation</strong> is an irreversible process where the original information, or its granularity, is lost. This is like throwing away the key to unlock the King’s iron mask. These are some examples of anonymisation techniques.</p>
+<style>
+   tbody tr:nth-child(odd){
+    background-color: #F8F8F8;
+  }
+</style>
+<table>
+<colgroup>
+<col width="17%" />
+<col width="45%" />
+<col width="19%" />
+<col width="17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Technique</th>
+<th align="left">Description</th>
+<th align="center">Before Example</th>
+<th align="center">After Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Adding noise</td>
+<td align="left">Add known levels of inaccuracy to data</td>
+<td align="center"><u>Savings</u><br>£23,034<br>£94,304<br>£25,153<br><br></td>
+<td align="center"><u>Savings</u><br>£24,943<br>£94,502<br>£24,205<br><br></td>
+</tr>
+<tr class="even">
+<td align="left">K-aggregation</td>
+<td align="left">Rolls up data into groups, summarising rows in minimum sample size K</td>
+<td align="center"><u>Location</u><br>London<br>Birmingham<br>Sheffield<br><br><br></td>
+<td align="center"><u>Location</u><br><br>UK<br><br>*K=3<br><br></td>
+</tr>
+<tr class="odd">
+<td align="left">Generalisation</td>
+<td align="left">Converts values into categories</td>
+<td align="center"><u>Location</u><br>London<br>Birmingham<br>Sheffield<br><br></td>
+<td align="center"><u>Location</u><br>UK<br>UK<br>UK<br><br></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pseudonymisation</strong> is a reversible process where the original information is preserved. This has fewer limitations on data analysis but is less secure because a key file that maps the original values to the masked values must be saved separately.</p>
+<p>This is like having a key to unlock the iron mask. These are some examples of pseudonymisation techniques.</p>
+<table>
+<colgroup>
+<col width="17%" />
+<col width="45%" />
+<col width="19%" />
+<col width="17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Technique</th>
+<th align="left">Description</th>
+<th align="center">Before Example</th>
+<th align="center">After Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Hashing</td>
+<td align="left">Converts data into a random character sequence that is difficult to reverse without the key<br></td>
+<td align="center"><u>Location</u><br>London<br>Birmingham<br>Sheffield<br><br></td>
+<td align="center"><u>Location</u><br>59ead8d1e124<sup>2</sup><br>269cb914b20d<sup>2</sup><br>30d85fa7d563<sup>2</sup><br><br></td>
+</tr>
+<tr class="even">
+<td align="left">Substitution</td>
+<td align="left">Replaces original values with alternative values</td>
+<td align="center"><u>Location</u><br>London<br>Birmingham<br>Sheffield<br><br></td>
+<td align="center"><u>Location</u><br>Giraffe<br>Eagle<br>Mercedes<br><br></td>
+</tr>
+<tr class="odd">
+<td align="left">L-Diversification</td>
+<td align="left">Splits each attribute into L different values</td>
+<td align="center"><u>Location</u><br>London<br><br><br><br><br></td>
+<td align="center"><u>Location</u><br>Giraffe<br>Springbok<br>Bison<br>*L=3<br><br></td>
+</tr>
+</tbody>
+</table>
+<p><sup>2</sup>Note: Each hashed location actually has 32 characters but only the first 12 characters are displayed in the table.</p>
+</div>
+<div id="when-and-how-to-mask-your-data" class="section level2">
+<h2>When and how to mask your data</h2>
+<p>This is a simple flow chart to help you start thinking about when and which masking techniques may be needed for your project.</p>
+<p><img src="/posts/2020-03-13-data-in-the-iron-mask_files/dataMasking_flowChart.png" /></p>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<p>Data masking is like <em>The Man in the Iron Mask</em>, you hide sensitive and important information behind a mask. It’s difficult to identify what’s behind the mask without unlocking it with a key. Companies need to mask important and sensitive personal information for privacy reasons, especially as they move towards storing data in the cloud. We’ve shared some data masking techniques and considerations for choosing appropriate techniques.</p>
+<p><small><a href="https://images.immediate.co.uk/production/volatile/sites/3/2018/06/The-Man-in-the-Iron-Mask-1998-54534e7.jpg?quality=90&amp;resize=620%2C413">P.s. We wanted to use <strong>this</strong> image of King Louis but couldn’t afford the copyright fees (click to see)</a> </small> 🙂</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>About the authors: Kenneth Lim is a Data Scientist with IBM’s Data Science Elite team, Nicholas Biller is the Senior People Data Science Lead at HSBC, Matthew Yerbury is the Group Head of People Data Science at HSBC.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
